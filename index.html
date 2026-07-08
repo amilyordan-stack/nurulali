@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrasi Kas - Jamiyah Hadrah Nurul Ali</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="pattern-overlay"></div>
+    
+    <div class="app-container">
+        <!-- App Header -->
+        <header>
+            <div class="logo-container">
+                <img src="logo/nurul-ali.png" alt="Logo Jamiyah Hadrah Nurul Ali" class="logo-img">
+                <div class="logo-text">
+                    <h1>NURUL ALI</h1>
+                    <p>Jamiyah Hadrah</p>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <button id="nav-btn-jamaah" class="btn btn-secondary" style="display: none;">
+                    <i class="fa-solid fa-users"></i> Halaman Jamaah
+                </button>
+                <button id="nav-btn-login" class="btn btn-primary">
+                    <i class="fa-solid fa-right-to-bracket"></i> Dashboard Admin
+                </button>
+                <button id="nav-btn-logout" class="btn btn-danger" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                </button>
+            </div>
+        </header>
+
+        <!-- Toast Notifications Container -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- ==================== JAMAAH VIEW ==================== -->
+        <section id="jamaah-section" class="app-section active">
+            <!-- Hero Card -->
+            <div class="glass-card hero-card">
+                <div class="hero-content">
+                    <div class="arabic-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                    <h2 class="hero-title">Informasi & Transparansi Jamiyah</h2>
+                    <p class="hero-subtitle">Informasi jadwal kegiatan sholawat dan transparansi laporan keuangan Jamiyah Hadrah Nurul Ali secara terbuka, akuntabel, dan amanah.</p>
+                    <div class="hero-divider"></div>
+                </div>
+            </div>
+
+            <!-- Schedule Card (Jadwal Undangan) -->
+            <div class="glass-card panel-card" style="margin-bottom: 30px;">
+                <h3 class="panel-title">
+                    <i class="fa-solid fa-calendar-days"></i> Jadwal Undangan
+                </h3>
+                <div id="jamaah-sched-list" class="schedule-list">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Quick Stats Grid -->
+            <div class="quick-stats-grid">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon total-kas">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h4>Saldo Kas Saat Ini</h4>
+                        <div id="jamaah-total-saldo" class="amount gold">Rp 0</div>
+                    </div>
+                </div>
+                
+                <div class="glass-card stat-card">
+                    <div class="stat-icon pemasukan">
+                        <i class="fa-solid fa-circle-arrow-down"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h4>Total Pemasukan</h4>
+                        <div id="jamaah-total-pemasukan" class="amount green">Rp 0</div>
+                    </div>
+                </div>
+                
+                <div class="glass-card stat-card">
+                    <div class="stat-icon pengeluaran">
+                        <i class="fa-solid fa-circle-arrow-up"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h4>Total Pengeluaran</h4>
+                        <div id="jamaah-total-pengeluaran" class="amount red">Rp 0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History Panel -->
+            <div class="glass-card panel-card" style="margin-bottom: 45px;">
+                <h3 class="panel-title">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Transaksi Kas
+                </h3>
+                
+                <!-- Filters -->
+                <div class="filter-bar">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="jamaah-search" class="search-input" placeholder="Cari keterangan, kategori, donatur...">
+                    </div>
+                    <select id="jamaah-filter-type" class="filter-select">
+                        <option value="all">Semua Tipe</option>
+                        <option value="in">Pemasukan (+)</option>
+                        <option value="out">Pengeluaran (-)</option>
+                    </select>
+                </div>
+
+                <!-- List container -->
+                <div id="jamaah-tx-list" class="transaction-list">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Jamiyah Info & Activities -->
+            <div class="profile-grid">
+                <!-- Board Members -->
+                <div class="glass-card profile-card">
+                    <h3 class="panel-title">
+                        <i class="fa-solid fa-users-gear"></i> Susunan Pengurus Jamiyah
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px;">Pengurus aktif Jamiyah Hadrah Nurul Ali periode berjalan:</p>
+                    <div class="org-chart">
+                        <div class="org-member">
+                            <div class="member-avatar">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div class="member-role">Ketua</div>
+                            <div class="member-name">Ust. Saiful Rohman</div>
+                        </div>
+                        <div class="org-member">
+                            <div class="member-avatar">
+                                <i class="fa-solid fa-calculator"></i>
+                            </div>
+                            <div class="member-role">Bendahara</div>
+                            <div class="member-name">Amil Yordan</div>
+                        </div>
+                        <div class="org-member">
+                            <div class="member-avatar">
+                                <i class="fa-solid fa-file-signature"></i>
+                            </div>
+                            <div class="member-role">Sekretaris</div>
+                            <div class="member-name">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== ADMIN DASHBOARD VIEW ==================== -->
+        <section id="admin-section" class="app-section">
+            <div class="glass-card hero-card" style="padding: 25px; margin-bottom: 30px; text-align: left;">
+                <div class="hero-content">
+                    <h2 class="hero-title" style="font-size: 26px;">
+                        <i class="fa-solid fa-screwdriver-wrench" style="color: var(--accent-gold); margin-right: 10px;"></i>
+                        Panel Administrasi Kas
+                    </h2>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-top: 5px;">
+                        Silakan tambah, ubah, atau hapus data kas. Semua perubahan akan langsung tercermin pada halaman publik Jamaah.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Stats Grid (Admin Copy) -->
+            <div class="quick-stats-grid">
+                <div class="glass-card stat-card">
+                    <div class="stat-icon total-kas">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h4>Saldo Kas</h4>
+                        <div id="admin-total-saldo" class="amount gold">Rp 0</div>
+                    </div>
+                </div>
+                
+                <div class="glass-card stat-card">
+                    <div class="stat-icon pemasukan">
+                        <i class="fa-solid fa-circle-arrow-down"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h4>Total Pemasukan</h4>
+                        <div id="admin-total-pemasukan" class="amount green">Rp 0</div>
+                    </div>
+                </div>
+                
+                <div class="glass-card stat-card">
+                    <div class="stat-icon pengeluaran">
+                        <i class="fa-solid fa-circle-arrow-up"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h4>Total Pengeluaran</h4>
+                        <div id="admin-total-pengeluaran" class="amount red">Rp 0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Tab Buttons -->
+            <div class="admin-tabs">
+                <button type="button" id="tab-btn-tx" class="admin-tab-btn active">
+                    <i class="fa-solid fa-money-bill-transfer"></i> Transaksi Kas
+                </button>
+                <button type="button" id="tab-btn-sched" class="admin-tab-btn">
+                    <i class="fa-solid fa-calendar-days"></i> Jadwal Undangan
+                </button>
+            </div>
+
+            <div id="admin-tx-grid" class="admin-grid">
+                <!-- Sidebar Form -->
+                <div class="glass-card admin-sidebar">
+                    <h3 id="form-action-title" class="form-title">
+                        <i class="fa-solid fa-folder-plus"></i> Tambah Transaksi
+                    </h3>
+                    
+                    <!-- Hidden input to store active ID for edits -->
+                    <input type="hidden" id="tx-edit-id">
+
+                    <!-- Toggle Pemasukan/Pengeluaran -->
+                    <div class="transaction-type-toggle">
+                        <button type="button" id="toggle-type-in" class="type-toggle-btn active in">Pemasukan (+)</button>
+                        <button type="button" id="toggle-type-out" class="type-toggle-btn out">Pengeluaran (-)</button>
+                    </div>
+
+                    <form id="tx-form">
+                        <!-- Nominal -->
+                        <div class="form-group">
+                            <label class="form-label" for="tx-amount">Nominal (Rp)</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <input type="number" id="tx-amount" class="form-input" placeholder="Contoh: 50000" required>
+                            </div>
+                        </div>
+
+                        <!-- Kategori -->
+                        <div class="form-group">
+                            <label class="form-label" for="tx-category">Kategori</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-tags"></i>
+                                <input type="text" id="tx-category" class="form-input" placeholder="Contoh: Kas Mingguan, Sumbangan, Konsumsi" list="category-suggestions" required>
+                                <datalist id="category-suggestions">
+                                    <option value="Kas Mingguan">
+                                    <option value="Sumbangan Donatur">
+                                     <option value="Uang Syahriah">
+                                    <option value="Manggung / Sholawatan">
+                                    <option value="Konsumsi Latihan">
+                                    <option value="Perawatan Alat Terbang">
+                                    <option value="Transportasi">
+                                    <option value="Perlengkapan / ATK">
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <!-- Tanggal -->
+                        <div class="form-group">
+                            <label class="form-label" for="tx-date">Tanggal</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-calendar"></i>
+                                <input type="date" id="tx-date" class="form-input" onkeydown="return false" required>
+                            </div>
+                        </div>
+
+                        <!-- Keterangan -->
+                        <div class="form-group">
+                            <label class="form-label" for="tx-description">Keterangan</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-comment-dots"></i>
+                                <input type="text" id="tx-description" class="form-input" placeholder="Detail transaksi..." required>
+                            </div>
+                        </div>
+
+                        <!-- Kontributor / Penanggung Jawab -->
+                        <div class="form-group">
+                            <label class="form-label" for="tx-contributor">Pemberi / Penerima / PJ</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="tx-contributor" class="form-input" placeholder="Nama orang / pihak terkait..." required>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-top: 25px;">
+                            <button type="submit" id="btn-submit-form" class="btn btn-primary" style="flex: 2; justify-content: center;">
+                                <i class="fa-solid fa-floppy-disk"></i> Simpan
+                            </button>
+                            <button type="button" id="btn-cancel-edit" class="btn btn-secondary" style="flex: 1; display: none; justify-content: center;">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Admin Transactions Manager -->
+                <div class="glass-card panel-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 class="panel-title" style="margin-bottom: 0;">
+                            <i class="fa-solid fa-list-check"></i> Kelola Transaksi
+                        </h3>
+                        <!-- Export Button -->
+                        <button id="btn-export-pdf" class="btn btn-secondary" style="padding: 8px 14px; font-size: 13px;">
+                            <i class="fa-solid fa-file-pdf"></i> Ekspor PDF
+                        </button>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filter-bar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="admin-search" class="search-input" placeholder="Cari keterangan, kategori, donatur...">
+                        </div>
+                        <select id="admin-filter-type" class="filter-select">
+                            <option value="all">Semua Tipe</option>
+                            <option value="in">Pemasukan (+)</option>
+                            <option value="out">Pengeluaran (-)</option>
+                        </select>
+                    </div>
+
+                    <!-- List Container -->
+                    <div id="admin-tx-list" class="transaction-list" style="max-height: 480px;">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Schedule Grid -->
+            <div id="admin-sched-grid" class="admin-grid" style="display: none;">
+                <!-- Schedule Form -->
+                <div class="glass-card admin-sidebar">
+                    <h3 id="sched-form-title" class="form-title">
+                        <i class="fa-solid fa-calendar-plus"></i> Tambah Jadwal
+                    </h3>
+                    <input type="hidden" id="sched-edit-id">
+                    <form id="sched-form">
+
+                        <!-- Tanggal -->
+                        <div class="form-group">
+                            <label class="form-label" for="sched-date">Tanggal</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-calendar"></i>
+                                <input type="date" id="sched-date" class="form-input" onkeydown="return false" required>
+                            </div>
+                        </div>
+                        <!-- Status -->
+                        <div class="form-group">
+                            <label class="form-label" for="sched-status">Status</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <select id="sched-status" class="form-input" style="padding-left: 42px;" required>
+                                    <option value="upcoming">Mendatang</option>
+                                    <option value="completed">Selesai</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Deskripsi Acara -->
+                        <div class="form-group">
+                            <label class="form-label" for="sched-desc">Nama Acara / Undangan</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-file-signature"></i>
+                                <input type="text" id="sched-desc" class="form-input" placeholder="Contoh: Walimatul Ursy" required>
+                            </div>
+                        </div>
+                        <!-- Waktu -->
+                        <div class="form-group">
+                            <label class="form-label" for="sched-time">Waktu</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-clock"></i>
+                                <input type="time" id="sched-time" class="form-input" onkeydown="return false" required>
+                            </div>
+                        </div>
+                        <!-- Lokasi -->
+                        <div class="form-group">
+                            <label class="form-label" for="sched-location">Lokasi / Tempat</label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-map-pin"></i>
+                                <input type="text" id="sched-location" class="form-input" placeholder="Contoh: Masjid Jami' Al-Ikhlas" required>
+                            </div>
+                        </div>
+                        <!-- Budget Bisyaroh -->
+                        <div class="form-group">
+                            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;" for="sched-budget">
+                                <span><i class="fa-solid fa-hand-holding-dollar" style="margin-right:4px;"></i> Budget Bisyaroh (Rp)</span>
+                                <label class="budget-pending-label" for="sched-budget-pending">
+                                    <input type="checkbox" id="sched-budget-pending">
+                                    <span class="budget-pending-toggle">
+                                        <i class="fa-solid fa-hourglass-half"></i> Pending
+                                    </span>
+                                </label>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <input type="number" id="sched-budget" class="form-input" placeholder="Contoh: 500000" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Link Map -->
+                        <div class="form-group">
+                            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;" for="sched-map-url">
+                                <span>Link Shareloc Map (Opsional)</span>
+                                <button type="button" id="btn-search-map" class="btn-text-link">
+                                    <i class="fa-solid fa-magnifying-glass-location"></i> Cari di Maps
+                                </button>
+                            </label>
+                            <div class="form-input-wrapper">
+                                <i class="fa-solid fa-location-arrow"></i>
+                                <input type="url" id="sched-map-url" class="form-input" placeholder="Contoh: https://maps.app.goo.gl/...">
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 25px;">
+                            <button type="submit" id="btn-submit-sched" class="btn btn-primary" style="flex: 2; justify-content: center;">
+                                <i class="fa-solid fa-floppy-disk"></i> Simpan
+                            </button>
+                            <button type="button" id="btn-cancel-sched-edit" class="btn btn-secondary" style="flex: 1; display: none; justify-content: center;">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Schedule Manager List -->
+                <div class="glass-card panel-card">
+                    <h3 class="panel-title">
+                        <i class="fa-solid fa-calendar-check"></i> Kelola Jadwal Undangan
+                    </h3>
+                    <div id="admin-sched-list" class="transaction-list" style="max-height: 480px;">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- ==================== LOGIN MODAL ==================== -->
+    <div id="login-modal-overlay" class="modal-overlay">
+        <div class="glass-card login-modal">
+            <button id="btn-close-login" class="close-modal-btn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="panel-title" style="justify-content: center; font-size: 22px; margin-bottom: 25px;">
+                <i class="fa-solid fa-user-shield"></i> Login Pengurus
+            </h3>
+            
+            <div class="login-hint">
+                <i class="fa-solid fa-circle-info" style="color: var(--accent-gold); margin-right: 5px;"></i>
+                Masukkan email dan password pengurus yang terdaftar untuk mengelola kas.
+            </div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email Pengurus</label>
+                    <div class="form-input-wrapper">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="login-email" class="form-input" required placeholder="Contoh: admin@nurulali.com">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <div class="form-input-wrapper">
+                        <i class="fa-solid fa-key"></i>
+                        <input type="password" id="login-password" class="form-input" autocomplete="current-password" required placeholder="Masukkan password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 15px; padding: 12px;">
+                    Masuk Ke Dashboard <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="app-container">
+            <p>&copy; 2026 Jamiyah Hadrah Nurul Ali. Dibuat dengan dedikasi penuh untuk syiar sholawat.</p>
+        </div>
+    </footer>
+
+    <!-- jsPDF and jsPDF AutoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    
+    <!-- Main Logic Script -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
